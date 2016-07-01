@@ -1,0 +1,182 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title id="pagetitle" runat="server">Gamer Theory - Video Game Reviews, News and Podcasts</title>
+	<link href="/css/default.css" rel="stylesheet" type="text/css" />
+	<link href="/css/styles.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<asp:Literal ID="litAdminJS" runat="server" />
+	<asp:ContentPlaceHolder ID="headerContent" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body id="body" runat="server" enableviewstate="false">
+	<form id="form1" runat="server">
+	<div id="outer-container">
+		<div id="header">
+			<h1><a href="/">Multi Platform Gamer</a></h1>
+			<div id="login-container">
+				<asp:Panel ID="pnlLoginForm" runat="server">
+					<script type="text/javascript">
+						function checkEnterButton(myfield, e) {
+							var keycode;
+							if (window.event) {
+								keycode = window.event.keyCode;
+							} else if (e) {
+								keycode = e.which;
+							}
+
+							if (keycode == 13) {
+								handleLogin();
+							}
+						}
+
+						function handleLogin() {
+							var username = $("#<%=username.ClientID %>").val();
+							var passwd = $("#<%=password.ClientID %>").val();
+							$("body").css("cursor", "progress");
+							$.post("/ajax/proc-login.aspx", { u: username, p: passwd }, function (data) {
+								$("body").css("cursor", "auto");
+								if (data == "success") {
+									// reload page
+									location.reload();
+								} else {
+									alert("That username or password is invalid.");
+									return false;
+								}
+							});
+						}
+					</script>
+					<table id="header-login">
+						<tr>
+							<td>
+								email<br />
+								<asp:TextBox CssClass="field" ID="username" MaxLength="50" runat="server" ValidationGroup="masterlogin" onkeypress="return checkEnterButton(this,event);" />
+							</td>
+							<td>
+								password<br />
+								<asp:TextBox CssClass="field" ID="password" TextMode="Password" MaxLength="50" runat="server" ValidationGroup="masterlogin" onkeypress="return checkEnterButton(this,event);" />
+							</td>
+							<td valign="bottom">
+								<img src="/images/header-btn-login.gif" onclick="handleLogin();" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="links">
+								<a href="/account/register.aspx">register</a> / <a href="/account/forgot-password.aspx">forgot password?</a>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+					</table>
+				</asp:Panel>
+				<asp:Panel ID="pnlLoggedIn" runat="server" CssClass="user-welcome-block">
+				    <asp:Literal ID="litUserWelcome" runat="server" />
+				    <br />
+				    <a href="/account/">Account</a>
+					<asp:Literal ID="litAdminLink" runat="server" />
+				    &nbsp;|&nbsp;
+				    <a href="/account/logout.aspx">Log out</a>
+				</asp:Panel>
+			</div>
+		</div>
+		
+		<ul id="main-nav">
+			<li class="home"><a class="home" href="/">Home</a></li>
+			<li class="games"><a class="games" href="/games/">Games</a></li>
+			<li class="community"><a class="community" href="http://forums.gamertheory.com/" target="_blank">Community</a></li>
+			<li class="news"><a class="news" href="/news/">News</a>
+				<ul class="subnav">
+					<li><a class="news" href="/games/previews.aspx">Previews</a></li>
+					<li><a class="news" href="/games/reviews.aspx">Reviews</a></li>
+					<li><a class="news" href="/news/">News</a></li>
+					<li><a class="news" href="/story/editorials.aspx">Editorials</a></li>
+					<li><a class="news" href="/games/user-reviews.aspx">User Reviews</a></li>
+				</ul>
+			</li>
+			<li class="rate"><a class="rate" href="/rate-this/">Rate This</a></li>
+			<li class="users"><a class="users" href="/users/">MPG Users</a></li>
+			<li class="podcasts"><a class="podcasts" href="/podcast/">Podcasts</a></li>
+		</ul>
+		
+		<div id="inner-container">
+			<div id="left-container">
+				<asp:ContentPlaceHolder id="contentLeft" runat="server"></asp:ContentPlaceHolder>
+			</div>
+			<div id="main-container">
+				<div id="main-container-left">
+					<asp:ContentPlaceHolder id="contentMain" runat="server"></asp:ContentPlaceHolder>
+				</div>
+				<div id="main-container-right">
+					<div style="height: 620px; width: 160px; margin: 0px 45px;">
+					<span style="color:#fff">Sponsored Links</span>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-6319538860147916";
+/* GT Sidebar */
+google_ad_slot = "0392432530";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+					</div>
+
+                    <!-- <gamer:RightSidebarAd ID="gamerAd" runat="server" /> -->
+                    <gamer:RightSidebarContent ID="userReviews" runat="server" />
+				</div>
+				<div class="clearance"></div>
+			</div>
+			
+			<div class="clearance"></div>
+			<div id="footer">
+				<a href="/">Home</a> | <a href="/games">Games</a> | <a href="http://forums.gamertheory.com/" target="_blank">Community</a> | <a href="/news">News</a> | <a href="/rate-this/">Rate This</a> | <a href="/users/">Users</a> | <a href="/podcast/">Podcasts</a> <!--| <a href="sitemap.aspx">Site Map</a> -->
+				<br />&copy; 2011 Gamer Theory Media Inc. <!--|  <a href="#">Terms & Conditions</a> | <a href="#">Privacy</a> --> | <a href="http://www.gamertheory.com/story.aspx/46/Our-Review-Policy-and-Point-Scale/">Review Policy</a>  <a href="/feed.aspx" class="rss-feed"><img src="/images/rss.png" alt="RSS Feed" title="RSS Feed" /></a>
+			</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23717520-1']);
+  _gaq.push(['_setDomainName', '.gamertheory.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+		</div>
+	</div>
+	</form>
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-7cr9ssdoZUTKw"
+});
+</script>
+
+<noscript>
+<div style="display:none;">
+<img src="//pixel.quantserve.com/pixel/p-7cr9ssdoZUTKw.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+</noscript>
+<!-- End Quantcast tag -->
+
+<script type="text/javascript" src="http://cdn.wibiya.com/Toolbars/dir_1322/Toolbar_1322643/Loader_1322643.js"></script><noscript><a href="http://www.wibiya.com/">Web Toolbar by Wibiya</a></noscript>
+
+</body>
+</html>

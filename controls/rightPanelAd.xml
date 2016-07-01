@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+    <Ad>
+        <ImageUrl>/uploads/ads/ad1.jpg</ImageUrl>
+        <NavigateUrl>http://www.stupidgamer.com/</NavigateUrl>
+        <AlternateText>Stupid Gamer</AlternateText>
+        <Impressions>100</Impressions>
+        <Keyword>video games</Keyword>
+    </Ad>
+</Advertisements>
